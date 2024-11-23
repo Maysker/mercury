@@ -2,244 +2,170 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    background-color: #0d1117; /* Dark background, like on the home page */
-    color: #c9d1d9; /* Light gray text */
+    background-color: #0d1117;
+    color: #c9d1d9;
     overflow-y: hidden;
-}
-
-.header {
+  }
+  
+  .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #161b22; /* Even darker background for contrast */
-    color: #58a6ff; /* Blue text for the header */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); /* Light shadow */
-}
-
-.status-bar {
-    text-align: center;
-    padding: 5px 0;
-    background-color: #292b34;
+    background-color: #161b22;
     color: #58a6ff;
-    font-size: 14px;
-    position: sticky; /* Fixed at the top */
-    top: 0;
-    z-index: 100;
-}
-
-.dashboard-layout {
+  }
+  
+  .dashboard-layout {
     display: grid;
     grid-template-columns: 2fr 3fr 2fr;
     gap: 20px;
     padding: 20px;
     height: calc(96vh - 50px);
-}
-
-.left-panel {
+  }
+  
+  .left-panel {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two cards per row */
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-}
-
-.right-panel {
+  }
+  
+  .right-panel {
     display: grid;
     gap: 15px;
-}
-
-.map-section {
+  }
+  
+  .map-section {
     display: flex;
     flex-direction: column;
     gap: 15px;
     height: 100%;
-}
-
-.map {
+  }
+  
+  .map {
     flex: 1;
     border-radius: 10px;
     width: 100%;
-    min-height: 300px; /* Minimum map height */
-    border: 1px solid #30363d; /* Gray border */
-}
-
-.below-map {
+    min-height: 300px;
+    border: 1px solid #30363d;
+  }
+  
+  .below-map {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two cards in one line */
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-}
-
-.card {
-    background-color: #161b22; /* Dark gray card background */
-    border: 1px solid #30363d; /* Thin gray border */
+  }
+  
+  .card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     z-index: 1;
-    min-width: 200px; /* Minimum card width */
-    max-width: 100%; /* No more than the parent container's width */
-}
-
-.mission-timer {
+    min-width: 200px;
+  }
+  
+  .mission-timer {
     display: grid;
     gap: 10px;
     padding: 15px;
-    background-color: #161b22; /* Dark gray card background */
-    border: 1px solid #30363d; /* Thin gray border */
-    border-radius: 10px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-.mission-timer h3 {
-    font-size: 18px;
-    margin: 0;
-    color: #58a6ff; /* Blue color */
-}
-
-.mission-timer .timer-display {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #58a6ff; /* Blue color */
-}
-
-.grid {
+    border-radius: 8px;
+    background-color: #181a1f;
+  }
+  
+  .grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
-}
-
-.grid-item {
-    background-color: #252a34; /* Mini-card background color */
-    border: 1px solid #30363d; /* Border for separation */
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-}
-
-.grid-item span {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #58a6ff;
-}
-
-.card h3 {
-    text-align: center; /* Center alignment */
-    font-size: 18px; /* Text size */
-    color: #58a6ff; /* Blue color for headers */
-    margin-bottom: 10px; /* Bottom margin */
-    text-transform: uppercase; /* Transform to uppercase */
-}
-
-
-/* Responsive Styles */
-
-/* For screens less than 1200px */
-@media (max-width: 1200px) {
-    body {
-        overflow-y: auto; /* Allow scrolling on smaller screens */
-    }
-
-    .dashboard-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .left-panel {
-        grid-template-columns: 1fr;
-    }
-
-    .below-map {
-        grid-template-columns: 1fr; /* Single column on small screens */
-    }
-
-    .map-section {
-        height: auto;
-    }
-}
-
-/* General style for mini-cards */
-.drone-details-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Two areas side by side */
-    gap: 15px;
-}
-
-.mini-card {
-    background-color: #252a34; /* Dark background */
+  }
+  
+  .grid-item {
+    background: #181a1f;
     padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-}
-
-.mini-card h4 {
-    font-size: 16px;
-    margin-bottom: 10px;
-    color: #58a6ff; /* Blue header */
-    text-align: center;
-}
-
-.mini-card ul {
+    border-radius: 8px;
+  }
+  
+  .timer-display {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .video-feed video {
+    width: 100%;
+    border-radius: 8px;
+  }
+  
+  .video-controls button {
+    background-color: #58a6ff;
+    border: none;
+    padding: 8px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .event-log {
     list-style: none;
     padding: 0;
-    margin: 0;
-    font-size: 14px; /* Smaller text */
-    color: #c9d1d9; /* White text */
-}
-
-.mini-card ul li {
-    margin-bottom: 5px;
-}
-
-
-/* For screens less than 768px */
-@media (max-width: 768px) {
-    body {
-        overflow-y: auto; /* Allow scrolling on smaller screens */
-    }
-
-    .dashboard-layout {
-        grid-template-columns: 1fr; /* Single column on narrow screens */
-        gap: 15px;
-    }
-
-    .map-section {
-        order: -1;
-        height: auto; /* Automatic height */
-    }
-
-    .below-map {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Slightly smaller minimum width */
-    }
-
-    .left-panel,
-    .right-panel {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Slightly smaller minimum width */
-    }
-    .card {
-        margin: 0 auto;
-        min-width: 100%; /* Stretch card to full width */
-    }
-
-}
-
-/* For screens less than 576px */
-@media (max-width: 576px) {
-     body {
-        overflow-y: auto; /* Allow scrolling on smaller screens */
-    }
-
-    .card {
-        margin: 5px 10px;
-        min-width: 100%; /* Stretch card to full width */
-        margin-left: -16px;
-        
-    }
-
-    .map {
-        height: 200px;
-    }
-
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
+  }
+  
+  .event-log .info {
+    background-color: #181a1f;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 8px;
+  }
+  
+  .info .time {
+    font-weight: bold;
+  }
+  
+  .info .highlight {
+    color: #58a6ff;
+  }
+  
+  .progress-bar-container {
+    height: 10px;
+    width: 100%;
+    background-color: #444c56;
+    border-radius: 5px;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #58a6ff;
+  }
+  
+  .card h3 {
+    font-size: 18px;
+    color: #58a6ff;
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-list li {
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-list span {
+    font-weight: bold;
+  }
+  
+  #latencyChart {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Button styles */
+  button {
+    padding: 10px 20px;
+    background-color: #58a6ff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #1f7e9b;
+  }
+  
