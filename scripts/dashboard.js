@@ -90,3 +90,46 @@ function moveDroneInCircle(drone) {
 setInterval(() => {
   drones.forEach(drone => moveDroneInCircle(drone));
 }, 100); // Smooth animation
+
+const videoSources = ["assets/videos/drone1.mp4", "assets/videos/drone2.mp4", "assets/videos/drone3.mp4"];
+
+const videoPlayer = document.getElementById("video-player");
+const videoSource = document.getElementById("video-source");
+const buttons = document.querySelectorAll(".video-controls button");
+
+let currentVideoIndex = 0;
+let isSwitching = false;
+
+function changeVideo(index) {
+  if (isSwitching) return;
+
+  isSwitching = true;
+
+  // Hide the video before changing
+  videoPlayer.style.visibility = "hidden";
+
+  currentVideoIndex = index;
+  videoSource.src = videoSources[currentVideoIndex];
+  videoPlayer.load();
+
+  videoPlayer.oncanplay = () => {
+   // Show video after loading
+    videoPlayer.style.visibility = "visible";
+    videoPlayer.play();
+    isSwitching = false;
+  };
+}
+
+
+let autoSwitch = setInterval(() => {
+  let nextIndex = (currentVideoIndex + 1) % videoSources.length;
+  changeVideo(nextIndex);
+}, 4000);
+
+buttons.forEach((button, index) => {
+  button.addEventListener("click", () => {
+    clearInterval(autoSwitch); 
+    console.log("Manual switch to:", videoSources[index]); 
+    changeVideo(index);
+  });
+});
