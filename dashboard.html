@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mercury Dashboard</title>
+  <link rel="stylesheet" href="styles/dashboard.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">Mercury</div>
+    <div class="header-info">
+      <div class="operator-details">
+        Operator ID: 32345 | Access Level: Alpha | Session Start: 12:00 PM
+      </div>
+    </div>
+    <div class="header-actions">
+      <button class="btn">Emergency Mode</button>
+      <button class="btn">Generate Report</button>
+      <button class="btn">Settings</button>
+    </div>
+  </header>
+  <!-- Main layout -->
+  <div class="dashboard-layout">
+    <!-- Left Panel (Network Panel) -->
+    <div class="left-panel">
+        <div class="card">
+            <h3>Network Status</h3>
+            <ul>
+                <li>Connection Type: IRIS2</li>
+                <li>Signal Quality: 85%</li>
+                <li>Data Rate: 15 Mbps</li>
+                <li>Encryption: AES-256</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Network Monitoring</h3>
+            <ul>
+                <li>Last Check: 00:00:00</li>
+                <li>Next Scan: 00:30</li>
+                <li>Active Connections: 5</li>
+                <li>Threat Level: Low</li>
+                <li>Recoveries: 0</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Latency and Error Analysis</h3>
+            <ul>
+                <li>Average Latency: 15 ms</li>
+                <li>Total Errors: 2</li>
+                <li>Latency Spikes: 3</li>
+                <li>Packet Loss: 1%</li>
+                <li>Error Recovery: 98%</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Packet Queue Monitoring</h3>
+            <ul>
+                <li>Active Queue Type: FIFO</li>
+                <li>Total Packets: 120</li>
+                <li>Packets in Queue: 3</li>
+                <li>Average Latency: 20 ms</li>
+                <li>Transmission Errors: 0</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>IRIS2</h3>
+            <ul>
+                <li>Lat: 54.341579</li>
+                <li>Long: -1.435360</li>
+                <li>Alt: 256,000m</li>
+                <li>Velocity: 25,555 km/h</li>
+                <li>Status: Active</li>
+            </ul>
+        </div>
+        <div class="card">
+            <h3>Galileo</h3>
+            <ul>
+                <li>Lat: 55.123456</li>
+                <li>Long: -1.987654</li>
+                <li>Alt: 270,000m</li>
+                <li>Velocity: 26,000 km/h</li>
+                <li>Status: Active</li>
+            </ul>
+        </div>
+    </div>
+</aside>
+    <!-- Central Block -->
+    <main class="map-section">
+        <!-- Map -->
+        <div id="map" class="map"></div>
+        <!-- New Section: Network Monitoring and Video Streaming -->
+        <div class="below-map">
+          <!-- Network Monitoring Map -->
+          <div class="card network-monitoring">
+            <h3>Operational Dashboard</h3>
+            <ul class="dashboard-list">
+                <li><span class="highlight">System Status:</span> <span id="system-status">Stable</span></li>
+                <li><span class="highlight">Active Connections:</span> <span id="active-connections">5</span></li>
+                <li><span class="highlight">Engaged Devices:</span> <span id="engaged-devices">3</span></li>
+                <li><span class="highlight">Session Duration:</span> <span id="session-duration">00:45:12</span></li>
+                <li><span class="highlight">Notifications:</span> <span id="notifications">No issues detected</span></li>
+              </ul>
+          </div>
+      
+          <!-- Video Streaming Map -->
+          <div class="card video-feed">
+            <h3>Drone Video Feed</h3>
+            <video id="video-player" autoplay muted loop>
+              <source id="video-source" src="drone1.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-controls">
+              <button id="source-1">Source 1</button>
+              <button id="source-2">Source 2</button>
+              <button id="source-3">Source 3</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    <!-- Right Panel (Drone Panel) -->
+    <aside class="right-panel">
+      <div class="card mission-timer">
+        <h3>Mission Timer</h3>
+        <div class="timer-display">
+          <span id="elapsed-time">00:21:00</span>
+        </div>
+        <div class="grid">
+          <div class="grid-item">
+            <p>Distance</p>
+            <span id="distance">12.5 KM</span>
+          </div>
+          <div class="grid-item">
+            <p>Current Speed</p>
+            <span id="current-speed">22 KM/H</span>
+          </div>
+          <div class="grid-item">
+            <p>Battery Left</p>
+            <span id="battery-left">95 MINS</span>
+          </div>
+          <div class="grid-item">
+            <p>Next Update</p>
+            <span id="next-update">1 HOUR</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Drone Details</h3>
+        <div class="drone-details-container">
+            <!-- General Information -->
+            <div class="mini-card">
+                <h4>General Info</h4>
+                <ul>
+                    <li><strong>Group:</strong> Recon Team</li>
+                    <li><strong>Status:</strong> In Flight 🟢</li>
+                    <li><strong>Mode:</strong> Reconnaissance</li>
+                    <li><strong>Connection:</strong> IRIS2, Galileo</li>
+                </ul>
+            </div>
+            <!-- Fleet Composition -->
+            <div class="mini-card">
+                <h4>Fleet Composition</h4>
+                <ul>
+                    <li>Falcon (Strike) - 1</li>
+                    <li>Hawk (Recon) - 1</li>
+                    <li>Raven (Commun) - 1</li>
+                </ul>
+            </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Event Log</h3>
+        <ul class="event-log">
+          <li class="info">
+            <span class="time">T+00:00</span> System initialized successfully.
+          </li>
+          <li class="info">
+            <span class="time">T+00:10</span> All drones active and ready.
+          </li>
+          <li class="info">
+            <span class="time">T+00:20</span> Connection to IRIS2 established.
+          </li>
+          <li class="info">
+            <span class="time">T+00:25</span> Mission standing by for operator command.
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+  <!-- Footer -->
+  <script src="scripts/dashboard.js" defer></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
