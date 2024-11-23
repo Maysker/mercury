@@ -53,24 +53,30 @@ setInterval(updateMissionData, 1000);
 
 // Initialization of drone data
 const drones = [
-  { id: 'Drone 1', angle: 0, offset: 0.003, coords: [50.007, 5.22], status: 'Active', marker: null },
-  { id: 'Drone 2', angle: 0, offset: 0.005, coords: [50.007, 5.22], status: 'Lost Connection', marker: null },
-  { id: 'Drone 3', angle: 0, offset: 0.007, coords: [50.007, 5.22], status: 'Low Battery', marker: null },
+  { id: 'Drone 1', angle: 0, offset: 0.003, coords: [50.007, 5.22], status: 'Active', marker: null, videoSrc: 'assets/drone1.mp4' },
+  { id: 'Drone 2', angle: 0, offset: 0.005, coords: [50.007, 5.22], status: 'Lost Connection', marker: null, videoSrc: 'assets/drone2.mp4' },
+  { id: 'Drone 3', angle: 0, offset: 0.007, coords: [50.007, 5.22], status: 'Low Battery', marker: null, videoSrc: 'assets/drone3.mp4' },
 ];
 
 // Patrol parameters
 const patrolRadius = 0.01; // Approx. 1 km in latitude/longitude
 const center = [50.007, 5.22]; // Center of the circular patrol
 
-// Initialize map
-const map = L.map('map').setView(center, 13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+// Initialize Leaflet Map
+const map = L.map('map').setView([50.007, 5.22], 13); // Coordinates for Belgium area
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+}).addTo(map);
 
 // Add markers for drones with the custom drone icon
 drones.forEach(drone => {
   drone.marker = L.marker(drone.coords, { icon: droneIcon })  // Use the custom icon
     .addTo(map)
-    .bindPopup(`${drone.id} - ${drone.status}`);
+    .bindPopup(`${drone.id} - ${drone.status}`)
+    .on('click', function() {
+      showVideoPopup(drone);
+    });
 });
 
 // Function to move drones in circular patrol with a small offset for group behavior
@@ -90,3 +96,80 @@ function moveDroneInCircle(drone) {
 setInterval(() => {
   drones.forEach(drone => moveDroneInCircle(drone));
 }, 100); // Smooth animation
+
+// Set up the latency chart with Chart.js
+const ctx = document.getElementById('latencyChart').getContext('2d');
+const latencyChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['00:00', '00:10', '00:20', '00:30', '00:40', '00:50'],
+    datasets: [{
+      label: 'Latency (ms)',
+      data: [100, 110, 105, 130, 125, 140],
+      borderColor: '#58a6ff',
+      fill: false,
+      tension: 0.1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        beginAtZero: true,
+      },
+    },
+  }
+});
+
+// Battery gauge (JustGage)
+const batteryGauge = new JustGage({
+  id: 'battery-gauge',
+  value: 75,
+  min: 0,
+  max: 100,
+  title: 'Battery',
+  label: '%',
+  levelColors: ['#ff3d3d', '#ffbf00', '#58a6ff']
+});
+
+// Function to display video in a pop-up when a drone marker is clicked
+function showVideoPopup(drone) {
+  const videoPopupContent = `
+    <div style="width: 100%; height: 100%;">
+      <video controls style="width: 100%; height: 100%;">
+        <source src="${drone.videoSrc}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+  `;
+  
+  const popup = L.popup()
+    .setLatLng(drone.coords)
+    .setContent(videoPopupContent)
+    .openOn(map);
+}
+
+const videoPlayer = document.getElementById('video-player');
+videoPlayer.play().catch(error => {
+  console.log("Video autoplay blocked", error);
+});
+
+// Button Click Event for Video Source Change (for UI switches)
+document.getElementById('source-1').addEventListener('click', () => {
+  const videoPlayer = document.getElementById('video-player');
+  videoPlayer.src = 'assets/drone1.mp4';
+  videoPlayer.load();  // Reload the video with new source
+  videoPlayer.play();  // Start playback
+});
+
+
+document.getElementById('source-2').addEventListener('click', () => {
+  document.getElementById('video-source').src = 'assets/drone2.mp4';
+});
+
+document.getElementById('source-3').addEventListener('click', () => {
+  document.getElementById('video-source').src = 'assets/drone3.mp4';
+});
+
+// Update Signal Quality
+document.getElementById('signal-progress-bar').style.width = '85%'; // Update width dynamically
