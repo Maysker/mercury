@@ -30,60 +30,61 @@
         <div class="card">
             <h3>Network Status</h3>
             <ul>
-                <li>Connection Type: IRIS2</li>
-                <li>Signal Quality: 85%</li>
-                <li>Data Rate: 15 Mbps</li>
-                <li>Encryption: AES-256</li>
+              <li id="connection-type">Connection Type: IRIS2</li>
+              <li id="signal-quality">Signal Quality: 85%</li>
+              <li id="data-rate">Data Rate: 15 Mbps</li>
+              <li id="encryption">Encryption: AES-256</li>
+              
             </ul>
         </div>
         <div class="card">
             <h3>Network Monitoring</h3>
             <ul>
-                <li>Last Check: 00:00:00</li>
-                <li>Next Scan: 00:30</li>
-                <li>Active Connections: 5</li>
-                <li>Threat Level: Low</li>
-                <li>Recoveries: 0</li>
+              <li id="last-check">Last Check: 00:00:00</li>
+              <li id="next-scan">Next Scan: 00:30</li>
+              <li id="active-connections">Active Connections: 5</li>
+              <li id="threat-level">Threat Level: Low</li>
+              <li id="recoveries">Recoveries: 0</li>              
             </ul>
         </div>
         <div class="card">
             <h3>Latency and Error Analysis</h3>
             <ul>
-                <li>Average Latency: 15 ms</li>
-                <li>Total Errors: 2</li>
-                <li>Latency Spikes: 3</li>
-                <li>Packet Loss: 1%</li>
-                <li>Error Recovery: 98%</li>
+              <li id="average-latency">Average Latency: 15 ms</li>
+              <li id="total-errors">Total Errors: 2</li>
+              <li id="latency-spikes">Latency Spikes: 3</li>
+              <li id="packet-loss">Packet Loss: 1%</li>
+              <li id="error-recovery">Error Recovery: 98%</li>              
             </ul>
         </div>
         <div class="card">
             <h3>Packet Queue Monitoring</h3>
             <ul>
-                <li>Active Queue Type: FIFO</li>
-                <li>Total Packets: 120</li>
-                <li>Packets in Queue: 3</li>
-                <li>Average Latency: 20 ms</li>
-                <li>Transmission Errors: 0</li>
+              <li id="queue-type">Active Queue Type: FIFO</li>
+              <li id="total-packets">Total Packets: 120</li>
+              <li id="packets-in-queue">Packets in Queue: 3</li>
+              <li id="queue-average-latency">Average Latency: 20 ms</li>
+              <li id="transmission-errors">Transmission Errors: 0</li>              
             </ul>
         </div>
         <div class="card">
             <h3>IRIS2</h3>
             <ul>
-                <li>Lat: 54.341579</li>
-                <li>Long: -1.435360</li>
-                <li>Alt: 256,000m</li>
-                <li>Velocity: 25,555 km/h</li>
-                <li>Status: Active</li>
+              <li id="satellite-lat">Lat: 54.341579</li>
+              <li id="satellite-long">Long: -1.435360</li>
+              <li id="satellite-alt">Alt: 256,000m</li>
+              <li id="satellite-velocity">Velocity: 25,555 km/h</li>
+              <li id="satellite-status">Status: Active</li>              
             </ul>
         </div>
         <div class="card">
             <h3>Galileo</h3>
             <ul>
-                <li>Lat: 55.123456</li>
-                <li>Long: -1.987654</li>
-                <li>Alt: 270,000m</li>
-                <li>Velocity: 26,000 km/h</li>
-                <li>Status: Active</li>
+              <li id="galileo-lat">Lat: 55.123456</li>
+              <li id="galileo-long">Long: -1.987654</li>
+              <li id="galileo-alt">Alt: 270,000m</li>
+              <li id="galileo-velocity">Velocity: 26,000 km/h</li>
+              <li id="galileo-status">Status: Active</li>              
             </ul>
         </div>
     </div>
@@ -164,9 +165,9 @@
             <div class="mini-card">
                 <h4>Fleet Composition</h4>
                 <ul>
-                    <li>Falcon (Strike) - 1</li>
-                    <li>Hawk (Recon) - 1</li>
-                    <li>Raven (Commun) - 1</li>
+                  <li id="falcon-strike">Falcon (Strike) - 1</li>
+                  <li id="hawk-recon">Hawk (Recon) - 1</li>
+                  <li id="raven-commun">Raven (Commun) - 1</li>
                 </ul>
             </div>
         </div>
@@ -174,18 +175,18 @@
       <div class="card">
         <h3>Event Log</h3>
         <ul class="event-log">
-          <li class="info">
+          <li class="info" id="event-1">
             <span class="time">T+00:00</span> System initialized successfully.
           </li>
-          <li class="info">
-            <span class="time">T+00:10</span> All drones active and ready.
+          <li class="info" id="event-2">
+              <span class="time">T+00:10</span> All drones active and ready.
           </li>
-          <li class="info">
-            <span class="time">T+00:20</span> Connection to IRIS2 established.
+          <li class="info" id="event-3">
+              <span class="time">T+00:20</span> Connection to IRIS2 established.
           </li>
-          <li class="info">
-            <span class="time">T+00:25</span> Mission standing by for operator command.
-          </li>
+          <li class="info" id="event-4">
+              <span class="time">T+00:25</span> Mission standing by for operator command.
+          </li>       
         </ul>
       </div>
     </aside>
