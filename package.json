@@ -5,13 +5,39 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-builder"
   },
   "keywords": [],
-  "author": "",
+  "author": "Adam Gazdiev <a.gazdiev@gmail.com>",
+  "contributors": [
+    "Antonio Maggi"
+  ],
   "license": "ISC",
   "devDependencies": {
     "electron": "^33.2.0",
     "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.mercury.dashboard",
+    "productName": "Mercury",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "path/to/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "path/to/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "path/to/icon.png"
+    }
   }
 }
