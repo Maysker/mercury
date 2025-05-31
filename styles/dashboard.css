@@ -265,3 +265,149 @@ body {
     background-color: #58a6ff;
     color: #161b22;
 }
+
+
+/* Event Log Scrollable */
+.event-log {
+  max-height: 180px;  /* Limit height */
+  overflow-y: auto;   /* Enable vertical scrolling */
+  padding-right: 10px;
+}
+
+/* Message styles */
+.event-log li {
+  padding: 6px 10px;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+/* Color styles */
+.event-log li.info {
+  background-color: #1e1e1e;
+  color: #d1d1d1;
+}
+
+.event-log li.warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border-left: 4px solid #ffc107;
+}
+
+.event-log li.critical {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-left: 4px solid #dc3545;
+  animation: pulseRed 1.2s infinite;
+}
+
+/* Pulse animation for critical */
+@keyframes pulseRed {
+  0%   { box-shadow: 0 0 0 0 rgba(220,53,69, 0.7); }
+  70%  { box-shadow: 0 0 0 10px rgba(220,53,69, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(220,53,69, 0); }
+}
+
+.decision-dialog.expanded {
+  width: 60vw;
+  height: 80vh;
+  position: fixed;
+  top: 10vh;
+  left: 10vw;
+  background-color: #161b22;
+  color: #c9d1d9;
+  border-radius: 12px;
+  border: 1px solid #30363d;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+  padding: 20px;
+  z-index: 9999;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.decision-dialog.expanded h3 {
+  font-size: 24px;
+  color: #ff6666;
+  margin-bottom: 5px;
+}
+
+.decision-dialog.expanded p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.decision-dialog.expanded video {
+  width: 100%;
+  height: auto;
+  max-height: 600px;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.threat-info, .notify-section {
+  background-color: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.object-list, .notify-list {
+  list-style: none;
+  padding-left: 0;
+  font-size: 15px;
+}
+
+.object-list li,
+.notify-list li {
+  margin: 5px 0;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.action-buttons button,
+.action-buttons select {
+  background-color: #238636;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.action-buttons button:hover,
+.action-buttons select:hover {
+  background-color: #2ea043;
+}
+
+.action-buttons button:disabled {
+  background-color: #444;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background-color: #238636;
+  color: white;
+  font-weight: bold;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #2ea043;
+}
+
+.btn-primary:disabled {
+  background-color: #555;
+  cursor: not-allowed;
+}
+

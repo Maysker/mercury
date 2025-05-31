@@ -133,3 +133,11 @@ buttons.forEach((button, index) => {
     changeVideo(index);
   });
 });
+
+document.getElementById('start-demo')?.addEventListener('click', () => {
+  if (typeof runDemoScenario === 'function') {
+    runDemoScenario();
+  } else {
+    console.warn('Demo scenario not available.');
+  }
+});
