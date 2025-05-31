@@ -91,7 +91,20 @@ setInterval(() => {
   drones.forEach(drone => moveDroneInCircle(drone));
 }, 100); // Smooth animation
 
-const videoSources = ["assets/videos/drone1.mp4", "assets/videos/drone2.mp4", "assets/videos/drone3.mp4"];
+window.initialVideoSources = [
+  "assets/videos/drone1.mp4",
+  "assets/videos/drone2.mp4",
+  "assets/videos/drone3.mp4"
+];
+
+window.tacticalVideoSources = [
+  "assets/videos/drone4.mp4",
+  "assets/videos/drone5.mp4",
+  "assets/videos/drone6.mp4"
+];
+
+
+window.videoSources = [...window.initialVideoSources];
 
 const videoPlayer = document.getElementById("video-player");
 const videoSource = document.getElementById("video-source");
@@ -99,21 +112,20 @@ const buttons = document.querySelectorAll(".video-controls button");
 
 let currentVideoIndex = 0;
 let isSwitching = false;
+let autoSwitch = null;
+
 
 function changeVideo(index) {
   if (isSwitching) return;
 
   isSwitching = true;
-
-  // Hide the video before changing
   videoPlayer.style.visibility = "hidden";
 
   currentVideoIndex = index;
-  videoSource.src = videoSources[currentVideoIndex];
+  videoSource.src = window.videoSources[currentVideoIndex];
   videoPlayer.load();
 
   videoPlayer.oncanplay = () => {
-   // Show video after loading
     videoPlayer.style.visibility = "visible";
     videoPlayer.play();
     isSwitching = false;
@@ -121,18 +133,51 @@ function changeVideo(index) {
 }
 
 
-let autoSwitch = setInterval(() => {
-  let nextIndex = (currentVideoIndex + 1) % videoSources.length;
-  changeVideo(nextIndex);
-}, 4000);
+function changeVideoByPath(path) {
+  if (isSwitching) return;
 
-buttons.forEach((button, index) => {
-  button.addEventListener("click", () => {
-    clearInterval(autoSwitch); 
-    console.log("Manual switch to:", videoSources[index]); 
-    changeVideo(index);
+  isSwitching = true;
+  videoPlayer.style.visibility = "hidden";
+
+  videoSource.src = path;
+  videoPlayer.load();
+
+  videoPlayer.oncanplay = () => {
+    videoPlayer.style.visibility = "visible";
+    videoPlayer.play();
+    isSwitching = false;
+  };
+}
+
+
+function bindVideoButtons(sourceArray) {
+  buttons.forEach((button, index) => {
+    button.onclick = () => {
+      clearInterval(autoSwitch);
+      currentVideoIndex = index;
+      const selectedPath = sourceArray[index];
+      if (selectedPath) {
+        changeVideoByPath(selectedPath);
+      } else {
+        console.warn(`No video for Source ${index + 1}`);
+      }
+    };
   });
-});
+}
+
+
+function startAutoSwitching(sourceArray) {
+  clearInterval(autoSwitch);
+  autoSwitch = setInterval(() => {
+    currentVideoIndex = (currentVideoIndex + 1) % sourceArray.length;
+    changeVideoByPath(sourceArray[currentVideoIndex]);
+  }, 4000);
+}
+
+
+bindVideoButtons(window.videoSources);
+startAutoSwitching(window.videoSources);
+
 
 document.getElementById('start-demo')?.addEventListener('click', () => {
   if (typeof runDemoScenario === 'function') {
@@ -141,3 +186,80 @@ document.getElementById('start-demo')?.addEventListener('click', () => {
     console.warn('Demo scenario not available.');
   }
 });
+
+function openFullscreenVideo() {
+  const modal = document.createElement("div");
+  modal.id = "video-modal";
+  modal.style.position = "fixed";
+  modal.style.top = "0";
+  modal.style.left = "0";
+  modal.style.width = "100vw";
+  modal.style.height = "100vh";
+  modal.style.backgroundColor = "rgba(0, 0, 0, 0.9)";
+  modal.style.zIndex = "9999";
+  modal.style.display = "flex";
+  modal.style.flexDirection = "column";
+  modal.style.alignItems = "center";
+  modal.style.justifyContent = "center";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.innerHTML = "✖";
+  closeBtn.style.position = "absolute";
+  closeBtn.style.top = "20px";
+  closeBtn.style.right = "30px";
+  closeBtn.style.fontSize = "24px";
+  closeBtn.style.color = "white";
+  closeBtn.style.background = "none";
+  closeBtn.style.border = "none";
+  closeBtn.style.cursor = "pointer";
+  closeBtn.onclick = () => document.body.removeChild(modal);
+
+  const fullscreenVideo = document.createElement("video");
+  fullscreenVideo.src = videoSource.src;
+  fullscreenVideo.autoplay = true;
+  fullscreenVideo.loop = true;
+  fullscreenVideo.muted = true;
+  fullscreenVideo.style.maxWidth = "90vw";
+  fullscreenVideo.style.maxHeight = "80vh";
+  fullscreenVideo.style.objectFit = "contain";
+  fullscreenVideo.style.borderRadius = "12px";
+
+  const buttonBar = document.createElement("div");
+  buttonBar.style.display = "flex";
+  buttonBar.style.gap = "10px";
+  buttonBar.style.marginTop = "15px";
+
+  const sourceNames = ["Source 1", "Source 2", "Source 3"];
+  const activeSet = window.videoSources || window.tacticalVideoSources;
+
+  sourceNames.forEach((label, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = label;
+    btn.style.padding = "6px 12px";
+    btn.style.fontSize = "14px";
+    btn.style.background = "#007bff";
+    btn.style.color = "#fff";
+    btn.style.border = "none";
+    btn.style.borderRadius = "4px";
+    btn.style.cursor = "pointer";
+
+    btn.onclick = () => {
+      const path = activeSet[index];
+      if (path) {
+        fullscreenVideo.src = path;
+        fullscreenVideo.load();
+        fullscreenVideo.play();
+      }
+    };
+
+    buttonBar.appendChild(btn);
+  });
+
+  modal.appendChild(closeBtn);
+  modal.appendChild(fullscreenVideo);
+  modal.appendChild(buttonBar);
+  document.body.appendChild(modal);
+}
+
+
+videoPlayer.addEventListener("click", openFullscreenVideo);
