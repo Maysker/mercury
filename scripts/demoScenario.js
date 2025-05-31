@@ -22,9 +22,69 @@ const scenarioSteps = [
     { time: 15000, action: () => updateSignal(70, "Medium", "orange") },
     { time: 18000, action: () => logEvent("🚨 Moving object detected in forested area", "critical") },
     { time: 20000, action: () => showDecisionDialogWithProtocols() },
+    
 ];
 
 let scenarioTimeouts = [];
+
+function showAccessRequestDialog(teamName, onApprove) {
+  const dialog = document.createElement("div");
+  dialog.className = "access-request-dialog";
+
+  dialog.innerHTML = `
+    <div class="dialog-content">
+      <h3 style="color: #ffffff;">Access Request</h3>
+    <p style="margin-bottom: 15px;">The following unit requests full tactical access:</p>
+
+    <div style="background-color: #222; padding: 12px; border-radius: 6px; margin-bottom: 20px;">
+      <p><strong>Unit:</strong> Alpha Team (SFG)</p>
+      <p><strong>Commander:</strong> Lt. Thomas Varga</p>
+      <p><strong>Request ID:</strong> #OPS-329A</p>
+      <p><strong>Clearance Level:</strong> TACTICAL / RED</p>
+    </div>
+
+    <div style="display: flex; justify-content: center; gap: 10px;">
+      <button id="grant-access-btn" class="btn-primary">Grant Access</button>
+      <button id="deny-access-btn" class="btn-danger">Deny</button>
+    </div>
+  `;
+
+  document.body.appendChild(dialog);
+
+  document.getElementById("grant-access-btn").addEventListener("click", () => {
+    dialog.remove();
+    if (typeof onApprove === "function") onApprove();
+  });
+}
+
+
+function runPostDecisionSequence() {
+  setTimeout(() => logEvent("🏛 ACOS Operations (MOD BE) has joined the incident command channel", "info"), 1000);
+  setTimeout(() => logEvent("🌐 NATO Joint Task Force HQ is monitoring the threat feed", "info"), 3000);
+  setTimeout(() => {
+    showAccessRequestDialog("Alpha Team", () => {
+      logEvent("✅ Access granted to Alpha Team", "info");
+
+      setTimeout(() => logEvent("🚁 Air Unit Bravo connected to mission feed", "info"), 3000);
+
+      setTimeout(() => {
+        logEvent("💥 Target neutralized by Alpha Team", "critical");
+
+        // Сome back to First list 
+        clearInterval(autoSwitch);
+        window.videoSources = [...window.initialVideoSources];
+        currentVideoIndex = 0;
+        bindVideoButtons(window.videoSources);
+        startAutoSwitching(window.videoSources);
+        changeVideo(currentVideoIndex);
+      }, 4000);
+
+      setTimeout(() => logEvent("🛡️ Zone secured. No secondary threats detected", "info"), 6000);
+    });
+  }, 5000);
+}
+
+
 
 function startDemoScenario() {
     resetScenario();
@@ -109,7 +169,7 @@ function showDecisionDialogWithProtocols() {
         </div>
       </div>
 
-      <!-- Right: AI analysis (не менялся) -->
+      <!-- Right: AI analysis -->
       <div style="flex: 1;">
         <p><strong>Intelligence Analysis (AI-Assisted):</strong></p>
         <div class="ai-analysis" style="background-color: #0d1117; padding: 10px; border-radius: 8px; border: 1px solid #30363d;">
@@ -134,9 +194,9 @@ function showDecisionDialogWithProtocols() {
       <button id="attack-btn">Engage (FALCON)</button>
       <select id="protocol-select">
         <option value="">Apply Protocol</option>
-        <option value="shield">🛡️ SHIELD</option>
-        <option value="ghost">🕵️ GHOST</option>
-        <option value="falcon">🦅 FALCON</option>
+        <option value="shield">SHIELD</option>
+        <option value="ghost">GHOST</option>
+        <option value="falcon">FALCON</option>
         <option value="add">➕ Add Custom</option>
       </select>
     </div>
@@ -145,33 +205,38 @@ function showDecisionDialogWithProtocols() {
       <div style="flex: 1;">
         <p><strong>Notify (Military Forces):</strong></p>
         <ul class="notify-list">
-          <li><input type="checkbox" checked> 🇧🇪 Quick Reaction Forces —
+          <li><input type="checkbox" checked>Quick Reaction Forces —
               <select>
                 <option>Full Access</option>
                 <option>Video + Coordinates</option>
                 <option>Coordinates Only</option>
               </select> — QRF ETA: 4 min
           </li>
-          <li><input type="checkbox"> 🛫 NATO Base —
+          <li><input type="checkbox">NATO Base —
               <select>
                 <option>Full Access</option>
+                <option>Video + Coordinates</option>
                 <option>Coordinates Only</option>
               </select> — QRF ETA: 8 min
           </li>
-          <li><input type="checkbox"> 🛩 Air Base —
+          <li><input type="checkbox">Air Base —
               <select>
                 <option>Full Access</option>
+                <option>Video + Coordinates</option>
                 <option>Coordinates Only</option>
               </select> — QRF ETA: 10 min
           </li>
-          <li><input type="checkbox"> 🪖 Military Unit —
+          <li><input type="checkbox">Military Unit —
               <select>
+                <option>Full Access</option>
+                <option>Video + Coordinates</option>
                 <option>Coordinates Only</option>
               </select> — QRF ETA: 6 min
           </li>
-          <li><input type="checkbox"> 🚓 Police —
+          <li><input type="checkbox">Police —
               <select>
-                <option>General Notice</option>
+                <option>Full Access</option>
+                <option>Video + Coordinates</option>
                 <option>Coordinates Only</option>
               </select> — QRF ETA: 10 min
           </li>
@@ -250,21 +315,39 @@ function chooseProtocol(value) {
 }
 
 function chooseAction(option) {
-    const dialog = document.querySelector(".decision-dialog");
-    if (dialog) dialog.remove();
+  // Remove dialog box and protocol
+  const dialog = document.querySelector(".decision-dialog");
+  if (dialog) dialog.remove();
 
-    const protocol = document.querySelector(".protocol-list");
-    if (protocol) protocol.remove();
+  const protocol = document.querySelector(".protocol-list");
+  if (protocol) protocol.remove();
 
-    if (option === 'observe') {
-        logEvent("🔍 Decision: continue observation", "info");
-        setTimeout(() => logEvent("🛰 Recon and area isolation activated", "info"), 3000);
-        setTimeout(() => notifyUnits(), 7000);
-    } else if (option === 'attack') {
-        logEvent("⚔️ Decision: execute FALCON protocol", "warning");
-        setTimeout(() => logEvent("📑 Executing FALCON protocol procedures...", "info"), 3000);
-    }
+  // Switch to tactical videos
+  clearInterval(autoSwitch);
+  window.videoSources = [...window.tacticalVideoSources];
+  currentVideoIndex = 0;
+
+  // Binding buttons to the new trio
+  bindVideoButtons(window.videoSources);
+
+  // Start autoshift
+  startAutoSwitching(window.videoSources);
+
+  // Show first video immediately
+  changeVideo(currentVideoIndex);
+
+  // Actions for the selected option
+  if (option === 'observe') {
+    logEvent("🔍 Decision: continue observation", "info");
+    setTimeout(() => logEvent("🛰 Recon and area isolation activated", "info"), 3000);
+    setTimeout(() => notifyUnits(), 7000);
+  } else if (option === 'attack') {
+    logEvent("⚔️ Decision: execute FALCON protocol", "warning");
+    setTimeout(() => logEvent("📑 Executing FALCON protocol procedures...", "info"), 3000);
+  }
+   runPostDecisionSequence();
 }
+
 
 function notifyUnits() {
     logEvent("📡 Quick reaction forces notified: ETA 4 min.", "info");
@@ -367,3 +450,4 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("❌ Demo button not found.");
     }
 });
+
